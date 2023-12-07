@@ -33,7 +33,7 @@
         changed this from 1.12.0 to 2.0.0 to support unit tests failing with error ASM ClassReader failed to parse class file
         https://talk.openmrs.org/t/how-can-i-fix-this-issue-failed-to-load-applicationcontext/33980/10
         -->
-        <openmrsPlatformVersion>2.3.1</openmrsPlatformVersion>
+        <openmrsPlatformVersion>2.6.2</openmrsPlatformVersion>
         <javaCompilerVersion>1.8</javaCompilerVersion>
         <dataexchangeVersion>1.3.3</dataexchangeVersion>
         <referenceapplicationVersion>2.10.0</referenceapplicationVersion>
