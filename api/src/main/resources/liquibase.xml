@@ -2563,14 +2563,14 @@
     </preConditions>
     <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="stockmgmt_user_role_scope" constraintName="stockmgmt_user_role_scope_user_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="user_id" referencedTableName="users" />
   </changeSet>
-  <changeSet author="dev" id="stockmanagement-1758855877841-218" failOnError="false">
-    <preConditions onFail="MARK_RAN">
-      <not>
-        <foreignKeyConstraintExists foreignKeyName="stockmgmt_user_role_scope_role_fk" />
-      </not>
-    </preConditions>
-    <addForeignKeyConstraint baseColumnNames="role" baseTableName="stockmgmt_user_role_scope" constraintName="stockmgmt_user_role_scope_role_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="role" referencedTableName="role" />
-  </changeSet>
+<!--  <changeSet author="dev" id="stockmanagement-1758855877841-218" failOnError="false">-->
+<!--    <preConditions onFail="MARK_RAN">-->
+<!--      <not>-->
+<!--        <foreignKeyConstraintExists foreignKeyName="stockmgmt_user_role_scope_role_fk" />-->
+<!--      </not>-->
+<!--    </preConditions>-->
+<!--    <addForeignKeyConstraint baseColumnNames="role" baseTableName="stockmgmt_user_role_scope" constraintName="stockmgmt_user_role_scope_role_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="role" referencedTableName="role" />-->
+<!--  </changeSet>-->
   <changeSet id="stockmanagement-1758855877841-219" author="dev">
     <preConditions onFail="MARK_RAN">
       <not>
@@ -2649,48 +2649,48 @@ $$
             DROP TRIGGER IF EXISTS `stockmgmt_location_after_insert`;
         </rollback>
   </changeSet>
-  <changeSet id="stockmanagement-1758855877841-226" author="dev">
-    <preConditions onFail="CONTINUE">
-      <dbms type="postgresql" />
-    </preConditions>
-    <comment>
-            Creating trigger stockmgmt_location_after_insert on location table
-        </comment>
-    <sql><![CDATA[
-DROP TRIGGER IF EXISTS stockmgmt_location_after_insert ON location;
+<!--  <changeSet id="stockmanagement-1758855877841-226" author="dev">-->
+<!--    <preConditions onFail="CONTINUE">-->
+<!--      <dbms type="postgresql" />-->
+<!--    </preConditions>-->
+<!--    <comment>-->
+<!--            Creating trigger stockmgmt_location_after_insert on location table-->
+<!--        </comment>-->
+<!--    <sql><![CDATA[-->
+<!--DROP TRIGGER IF EXISTS stockmgmt_location_after_insert ON location;-->
 
-DROP FUNCTION IF EXISTS stockmgmt_location_after_insert();
+<!--DROP FUNCTION IF EXISTS stockmgmt_location_after_insert();-->
 
-CREATE OR REPLACE FUNCTION stockmgmt_location_after_insert()
-    RETURNS trigger
-    LANGUAGE 'plpgsql'
-AS $BODY$
+<!--CREATE OR REPLACE FUNCTION stockmgmt_location_after_insert()-->
+<!--    RETURNS trigger-->
+<!--    LANGUAGE 'plpgsql'-->
+<!--AS $BODY$-->
 
-DECLARE
+<!--DECLARE-->
 
-BEGIN
+<!--BEGIN-->
 
-    INSERT INTO stockmgmt_location_tree (parent_location_id, child_location_id, depth, uuid) VALUES (NEW.location_id, NEW.location_id, 0,uuid_generate_v4());
-    INSERT INTO stockmgmt_location_tree (parent_location_id, child_location_id, depth, uuid) SELECT x.parent_location_id, NEW.location_id, x.depth + 1,uuid_generate_v4() FROM stockmgmt_location_tree x WHERE x.child_location_id = NEW.parent_location;
-    INSERT INTO stockmgmt_party(location_id, creator, date_created, uuid) VALUES(NEW.location_id,NEW.creator, NEW.date_created, uuid_generate_v4());
+<!--    INSERT INTO stockmgmt_location_tree (parent_location_id, child_location_id, depth, uuid) VALUES (NEW.location_id, NEW.location_id, 0,uuid_generate_v4());-->
+<!--    INSERT INTO stockmgmt_location_tree (parent_location_id, child_location_id, depth, uuid) SELECT x.parent_location_id, NEW.location_id, x.depth + 1,uuid_generate_v4() FROM stockmgmt_location_tree x WHERE x.child_location_id = NEW.parent_location;-->
+<!--    INSERT INTO stockmgmt_party(location_id, creator, date_created, uuid) VALUES(NEW.location_id,NEW.creator, NEW.date_created, uuid_generate_v4());-->
 
-    RETURN NEW;
+<!--    RETURN NEW;-->
 
-END;
+<!--END;-->
 
-$BODY$;
+<!--$BODY$;-->
 
-CREATE TRIGGER stockmgmt_location_after_insert
-    AFTER INSERT
-    ON location
-    FOR EACH ROW
-    EXECUTE FUNCTION stockmgmt_location_after_insert();
-            ]]></sql>
-    <rollback>
-            DROP TRIGGER IF EXISTS stockmgmt_location_after_insert ON location;
-            DROP FUNCTION IF EXISTS stockmgmt_location_after_insert();
-        </rollback>
-  </changeSet>
+<!--CREATE TRIGGER stockmgmt_location_after_insert-->
+<!--    AFTER INSERT-->
+<!--    ON location-->
+<!--    FOR EACH ROW-->
+<!--    EXECUTE FUNCTION stockmgmt_location_after_insert();-->
+<!--            ]]></sql>-->
+<!--    <rollback>-->
+<!--            DROP TRIGGER IF EXISTS stockmgmt_location_after_insert ON location;-->
+<!--            DROP FUNCTION IF EXISTS stockmgmt_location_after_insert();-->
+<!--        </rollback>-->
+<!--  </changeSet>-->
   <changeSet id="stockmanagement-1758855877841-227" author="dev">
     <preConditions onFail="MARK_RAN">
       <dbms type="mysql" />
@@ -2719,72 +2719,72 @@ $$
             DROP TRIGGER IF EXISTS `stockmgmt_location_before_update`;
         </rollback>
   </changeSet>
-  <changeSet id="stockmanagement-1758855877841-228" author="dev">
-    <preConditions onFail="MARK_RAN">
-      <and>
-        <dbms type="postgresql" />
-      </and>
-    </preConditions>
-    <comment>
-            Creating trigger stockmgmt_location_before_update on location table
-        </comment>
-    <sql><![CDATA[
-DROP TRIGGER IF EXISTS stockmgmt_location_before_update ON location;
+<!--  <changeSet id="stockmanagement-1758855877841-228" author="dev">-->
+<!--    <preConditions onFail="MARK_RAN">-->
+<!--      <and>-->
+<!--        <dbms type="postgresql" />-->
+<!--      </and>-->
+<!--    </preConditions>-->
+<!--    <comment>-->
+<!--            Creating trigger stockmgmt_location_before_update on location table-->
+<!--        </comment>-->
+<!--    <sql><![CDATA[-->
+<!--DROP TRIGGER IF EXISTS stockmgmt_location_before_update ON location;-->
 
-DROP FUNCTION IF EXISTS stockmgmt_location_before_update();
+<!--DROP FUNCTION IF EXISTS stockmgmt_location_before_update();-->
 
-CREATE OR REPLACE FUNCTION stockmgmt_location_before_update()
-    RETURNS trigger
-    LANGUAGE 'plpgsql'
-AS $BODY$
+<!--CREATE OR REPLACE FUNCTION stockmgmt_location_before_update()-->
+<!--    RETURNS trigger-->
+<!--    LANGUAGE 'plpgsql'-->
+<!--AS $BODY$-->
 
-DECLARE
+<!--DECLARE-->
 
-BEGIN
+<!--BEGIN-->
 
-    IF NEW.location_id <> OLD.location_id THEN
+<!--    IF NEW.location_id <> OLD.location_id THEN-->
 
-        RAISE EXCEPTION 'Changing ids is forbidden.';
+<!--        RAISE EXCEPTION 'Changing ids is forbidden.';-->
 
-    END IF;
+<!--    END IF;-->
 
-    IF NOT OLD.parent_location IS DISTINCT FROM NEW.parent_location THEN
+<!--    IF NOT OLD.parent_location IS DISTINCT FROM NEW.parent_location THEN-->
 
-        RETURN NEW;
+<!--        RETURN NEW;-->
 
-    END IF;
+<!--    END IF;-->
 
-    IF NEW.parent_location IS NULL THEN
+<!--    IF NEW.parent_location IS NULL THEN-->
 
-        RETURN NEW;
+<!--        RETURN NEW;-->
 
-    END IF;
+<!--    END IF;-->
 
-    PERFORM 1 FROM stockmgmt_location_tree WHERE ( parent_location_id, child_location_id ) = ( NEW.location_id, NEW.parent_location );
+<!--    PERFORM 1 FROM stockmgmt_location_tree WHERE ( parent_location_id, child_location_id ) = ( NEW.location_id, NEW.parent_location );-->
 
-    IF FOUND THEN
+<!--    IF FOUND THEN-->
 
-        RAISE EXCEPTION 'Update blocked, because it would create loop in tree.';
+<!--        RAISE EXCEPTION 'Update blocked, because it would create loop in tree.';-->
 
-    END IF;
+<!--    END IF;-->
 
-    RETURN NEW;
+<!--    RETURN NEW;-->
 
-END;
+<!--END;-->
 
-$BODY$;
+<!--$BODY$;-->
 
-CREATE TRIGGER stockmgmt_location_before_update
-    BEFORE UPDATE
-    ON public.location
-    FOR EACH ROW
-    EXECUTE FUNCTION public.stockmgmt_location_before_update();
-            ]]></sql>
-    <rollback>
-            DROP TRIGGER IF EXISTS stockmgmt_location_before_update ON location;
-            DROP FUNCTION IF EXISTS stockmgmt_location_before_update();
-        </rollback>
-  </changeSet>
+<!--CREATE TRIGGER stockmgmt_location_before_update-->
+<!--    BEFORE UPDATE-->
+<!--    ON public.location-->
+<!--    FOR EACH ROW-->
+<!--    EXECUTE FUNCTION public.stockmgmt_location_before_update();-->
+<!--            ]]></sql>-->
+<!--    <rollback>-->
+<!--            DROP TRIGGER IF EXISTS stockmgmt_location_before_update ON location;-->
+<!--            DROP FUNCTION IF EXISTS stockmgmt_location_before_update();-->
+<!--        </rollback>-->
+<!--  </changeSet>-->
   <changeSet id="stockmanagement-1758855877841-229" author="dev">
     <preConditions onFail="MARK_RAN">
       <dbms type="mysql" />
@@ -2824,84 +2824,84 @@ $$
             DROP TRIGGER IF EXISTS `stockmgmt_location_after_update`;
         </rollback>
   </changeSet>
-  <changeSet id="stockmanagement-1758855877841-230" author="dev">
-    <preConditions onFail="MARK_RAN">
-      <and>
-        <dbms type="postgresql" />
-      </and>
-    </preConditions>
-    <comment>
-            Creating trigger stockmgmt_location_after_update on location table
-        </comment>
-    <sql><![CDATA[
-DROP TRIGGER IF EXISTS stockmgmt_location_after_update ON location;
+<!--  <changeSet id="stockmanagement-1758855877841-230" author="dev">-->
+<!--    <preConditions onFail="MARK_RAN">-->
+<!--      <and>-->
+<!--        <dbms type="postgresql" />-->
+<!--      </and>-->
+<!--    </preConditions>-->
+<!--    <comment>-->
+<!--            Creating trigger stockmgmt_location_after_update on location table-->
+<!--        </comment>-->
+<!--    <sql><![CDATA[-->
+<!--DROP TRIGGER IF EXISTS stockmgmt_location_after_update ON location;-->
 
-DROP FUNCTION IF EXISTS stockmgmt_location_after_update();
+<!--DROP FUNCTION IF EXISTS stockmgmt_location_after_update();-->
 
-CREATE OR REPLACE FUNCTION stockmgmt_location_after_update()
-    RETURNS trigger
-    LANGUAGE 'plpgsql'
-AS $BODY$
+<!--CREATE OR REPLACE FUNCTION stockmgmt_location_after_update()-->
+<!--    RETURNS trigger-->
+<!--    LANGUAGE 'plpgsql'-->
+<!--AS $BODY$-->
 
-DECLARE
+<!--DECLARE-->
 
-BEGIN
+<!--BEGIN-->
 
-    IF NOT OLD.parent_location IS DISTINCT FROM NEW.parent_location THEN
+<!--    IF NOT OLD.parent_location IS DISTINCT FROM NEW.parent_location THEN-->
 
-        RETURN NEW;
+<!--        RETURN NEW;-->
 
-    END IF;
+<!--    END IF;-->
 
-    IF OLD.parent_location IS NOT NULL THEN
+<!--    IF OLD.parent_location IS NOT NULL THEN-->
 
-        DELETE FROM stockmgmt_location_tree WHERE stockmgmt_location_tree_id in (
+<!--        DELETE FROM stockmgmt_location_tree WHERE stockmgmt_location_tree_id in (-->
 
-            SELECT r2.stockmgmt_location_tree_id FROM stockmgmt_location_tree r1 join stockmgmt_location_tree r2 on r1.child_location_id = r2.child_location_id
+<!--            SELECT r2.stockmgmt_location_tree_id FROM stockmgmt_location_tree r1 join stockmgmt_location_tree r2 on r1.child_location_id = r2.child_location_id-->
 
-            WHERE r1.parent_location_id = NEW.location_id AND r2.depth > r1.depth
+<!--            WHERE r1.parent_location_id = NEW.location_id AND r2.depth > r1.depth-->
 
-        );
+<!--        );-->
 
-    END IF;
+<!--    END IF;-->
 
-    IF NEW.parent_location IS NOT NULL THEN
+<!--    IF NEW.parent_location IS NOT NULL THEN-->
 
-        INSERT INTO stockmgmt_location_tree (parent_location_id, child_location_id, depth, uuid)
+<!--        INSERT INTO stockmgmt_location_tree (parent_location_id, child_location_id, depth, uuid)-->
 
-            SELECT r1.parent_location_id, r2.child_location_id, r1.depth + r2.depth + 1, uuid_generate_v4()
+<!--            SELECT r1.parent_location_id, r2.child_location_id, r1.depth + r2.depth + 1, uuid_generate_v4()-->
 
-        FROM
+<!--        FROM-->
 
-            stockmgmt_location_tree r1,
+<!--            stockmgmt_location_tree r1,-->
 
-            stockmgmt_location_tree r2
+<!--            stockmgmt_location_tree r2-->
 
-        WHERE
+<!--        WHERE-->
 
-            r1.child_location_id = NEW.parent_location AND
+<!--            r1.child_location_id = NEW.parent_location AND-->
 
-            r2.parent_location_id = NEW.location_id;
+<!--            r2.parent_location_id = NEW.location_id;-->
 
-    END IF;
+<!--    END IF;-->
 
-    RETURN NEW;
+<!--    RETURN NEW;-->
 
-END;
+<!--END;-->
 
-$BODY$;
+<!--$BODY$;-->
 
-CREATE TRIGGER stockmgmt_location_after_update
-    AFTER UPDATE
-    ON public.location
-    FOR EACH ROW
-    EXECUTE FUNCTION stockmgmt_location_after_update();
-            ]]></sql>
-    <rollback>
-            DROP TRIGGER IF EXISTS stockmgmt_location_after_update ON location;
-            DROP FUNCTION IF EXISTS stockmgmt_location_after_update();
-        </rollback>
-  </changeSet>
+<!--CREATE TRIGGER stockmgmt_location_after_update-->
+<!--    AFTER UPDATE-->
+<!--    ON public.location-->
+<!--    FOR EACH ROW-->
+<!--    EXECUTE FUNCTION stockmgmt_location_after_update();-->
+<!--            ]]></sql>-->
+<!--    <rollback>-->
+<!--            DROP TRIGGER IF EXISTS stockmgmt_location_after_update ON location;-->
+<!--            DROP FUNCTION IF EXISTS stockmgmt_location_after_update();-->
+<!--        </rollback>-->
+<!--  </changeSet>-->
   <changeSet id="stockmanagement-1758855877841-231" author="dev">
     <preConditions onFail="MARK_RAN">
       <dbms type="mysql" />
@@ -2928,52 +2928,52 @@ $$
             DROP TRIGGER IF EXISTS `stockmgmt_location_after_delete`;
         </rollback>
   </changeSet>
-  <changeSet id="stockmanagement-1758855877841-232" author="dev">
-    <preConditions onFail="MARK_RAN">
-      <and>
-        <dbms type="postgresql" />
-      </and>
-    </preConditions>
-    <comment>
-            Creating trigger stockmgmt_location_after_delete on location table
-        </comment>
-    <sql><![CDATA[
-DROP TRIGGER IF EXISTS stockmgmt_location_after_delete ON location;
+<!--  <changeSet id="stockmanagement-1758855877841-232" author="dev">-->
+<!--    <preConditions onFail="MARK_RAN">-->
+<!--      <and>-->
+<!--        <dbms type="postgresql" />-->
+<!--      </and>-->
+<!--    </preConditions>-->
+<!--    <comment>-->
+<!--            Creating trigger stockmgmt_location_after_delete on location table-->
+<!--        </comment>-->
+<!--    <sql><![CDATA[-->
+<!--DROP TRIGGER IF EXISTS stockmgmt_location_after_delete ON location;-->
 
-DROP FUNCTION IF EXISTS stockmgmt_location_after_delete();
+<!--DROP FUNCTION IF EXISTS stockmgmt_location_after_delete();-->
 
-CREATE OR REPLACE FUNCTION stockmgmt_location_after_delete()
-    RETURNS trigger
-    LANGUAGE 'plpgsql'
-AS $BODY$
+<!--CREATE OR REPLACE FUNCTION stockmgmt_location_after_delete()-->
+<!--    RETURNS trigger-->
+<!--    LANGUAGE 'plpgsql'-->
+<!--AS $BODY$-->
 
-DECLARE
+<!--DECLARE-->
 
-BEGIN
-	DELETE FROM stockmgmt_location_tree WHERE stockmgmt_location_tree_id in (
-    SELECT stockmgmt_location_tree_id FROM (
-		SELECT  distinct r2.stockmgmt_location_tree_id
-		FROM stockmgmt_location_tree r1
-		JOIN stockmgmt_location_tree r2 on r1.child_location_id = r2.child_location_id
-		WHERE r1.parent_location_id = OLD.location_id) as ids_to_delete);
+<!--BEGIN-->
+<!--	DELETE FROM stockmgmt_location_tree WHERE stockmgmt_location_tree_id in (-->
+<!--    SELECT stockmgmt_location_tree_id FROM (-->
+<!--		SELECT  distinct r2.stockmgmt_location_tree_id-->
+<!--		FROM stockmgmt_location_tree r1-->
+<!--		JOIN stockmgmt_location_tree r2 on r1.child_location_id = r2.child_location_id-->
+<!--		WHERE r1.parent_location_id = OLD.location_id) as ids_to_delete);-->
 
-    RETURN NEW;
+<!--    RETURN NEW;-->
 
-END;
+<!--END;-->
 
-$BODY$;
+<!--$BODY$;-->
 
-CREATE TRIGGER stockmgmt_location_after_delete
-    AFTER DELETE
-    ON public.location
-    FOR EACH ROW
-    EXECUTE FUNCTION stockmgmt_location_after_delete();
-            ]]></sql>
-    <rollback>
-            DROP TRIGGER IF EXISTS stockmgmt_location_after_delete ON location;
-            DROP FUNCTION IF EXISTS stockmgmt_location_after_delete();
-        </rollback>
-  </changeSet>
+<!--CREATE TRIGGER stockmgmt_location_after_delete-->
+<!--    AFTER DELETE-->
+<!--    ON public.location-->
+<!--    FOR EACH ROW-->
+<!--    EXECUTE FUNCTION stockmgmt_location_after_delete();-->
+<!--            ]]></sql>-->
+<!--    <rollback>-->
+<!--            DROP TRIGGER IF EXISTS stockmgmt_location_after_delete ON location;-->
+<!--            DROP FUNCTION IF EXISTS stockmgmt_location_after_delete();-->
+<!--        </rollback>-->
+<!--  </changeSet>-->
   <changeSet id="stockmanagement-1758855877841-233" author="dev">
     <preConditions onFail="MARK_RAN">
       <sqlCheck expectedResult="0">SELECT COUNT(*) FROM location_tag WHERE name = 'Main Pharmacy'</sqlCheck>
