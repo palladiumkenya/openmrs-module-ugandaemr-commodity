@@ -1844,7 +1844,7 @@ public class StockManagementServiceImpl extends BaseOpenmrsService implements St
                             messageSourceService.getMessage("stockmanagement.stockoperation.notupdateable"));
                 }
             } else if (action.equals(StockOperationAction.Action.COMPLETE)) {
-                boolean canComplete = false;
+                boolean canComplete = true;
                 if (stockOperation.isUpdateable()
                         && !stockOperation.getStockOperationType().requiresDispatchAcknowledgement()) {
                     canComplete = true;
@@ -2018,6 +2018,7 @@ public class StockManagementServiceImpl extends BaseOpenmrsService implements St
                 stockOperation.setStatus(StockOperationStatus.SUBMITTED);
                 stockOperation.setSubmittedDate(new Date());
             } else if (action == StockOperationAction.Action.COMPLETE) {
+                resetDispatchedQuantities(stockOperation);
                 stockOperation.setCompletedBy(Context.getAuthenticatedUser());
                 stockOperation.setStatus(StockOperationStatus.COMPLETED);
                 stockOperation.setCompletedDate(new Date());
@@ -2040,7 +2041,7 @@ public class StockManagementServiceImpl extends BaseOpenmrsService implements St
             stockOperation.setChangedBy(Context.getAuthenticatedUser());
             stockOperation.setDateChanged(new Date());
         } else if (action == StockOperationAction.Action.COMPLETE) {
-
+            resetDispatchedQuantities(stockOperation);
             stockOperation.setCompletedBy(Context.getAuthenticatedUser());
             stockOperation.setStatus(StockOperationStatus.COMPLETED);
             stockOperation.setCompletedDate(new Date());
