@@ -2400,6 +2400,7 @@ public class StockManagementServiceImpl extends BaseOpenmrsService implements St
                         stockItemInventory.setQuantity(stockItemInventory.getQuantity().divide(preferredUoM.getFactor(), 5, BigDecimal.ROUND_HALF_EVEN));
                         stockItemInventory.setQuantityUoM(preferredUoM.getPackagingUomName());
                         stockItemInventory.setQuantityUoMUuid(preferredUoM.getUuid());
+                        stockItemInventory.setStockItemUuid(stockItemInventory.getStockItemUuid());
                     }
                 }
             }
@@ -2455,6 +2456,7 @@ public class StockManagementServiceImpl extends BaseOpenmrsService implements St
                 for (StockItemInventory stockItemInventory : result.getData()) {
                     if (partyNames != null && stockItemInventory.getPartyId() != null) {
                         stockItemInventory.setPartyName(partyNames.getOrDefault(stockItemInventory.getPartyId(), null));
+
                     }
                     if (stockBatchNames != null && stockItemInventory.getStockBatchId() != null) {
                         StockBatchDTO batch = stockBatchNames.getOrDefault(stockItemInventory.getStockBatchId(), null);
@@ -2528,11 +2530,16 @@ public class StockManagementServiceImpl extends BaseOpenmrsService implements St
 
                             for (StockItemInventory stockItemInventory : result.getData().stream().filter(p -> p.getStockItemId().equals(entry.getKey())).collect(Collectors.toList())) {
                                 List<StockItemPackagingUOMDTO> uomList = entry.getValue();
+                                
+                                
                                 StockItemPackagingUOMDTO preferredUoM = getPreferredPackagingUoM(stockItemInventory.getQuantity(), uomList,false, uomPriorityIsBigToSmall, null);
                                 stockItemInventory.setQuantity(stockItemInventory.getQuantity().divide(preferredUoM.getFactor(), 5, BigDecimal.ROUND_HALF_EVEN));
                                 stockItemInventory.setQuantityUoM(preferredUoM.getPackagingUomName());
                                 stockItemInventory.setQuantityUoMUuid(preferredUoM.getUuid());
                                 stockItemInventory.setQuantityFactor(preferredUoM.getFactor());
+                                stockItemInventory.setStockItemUuid(preferredUoM.getStockItemUuid());
+
+
                             }
 
                             if (filter.getTotalBy() != null && filter.getTotalBy() != StockItemInventorySearchFilter.InventoryGroupBy.LocationStockItemBatchNo) {
