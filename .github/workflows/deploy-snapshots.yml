@@ -1,38 +1,57 @@
-name: Deploy Snapshots
+name: Build and Publish to Nexus
 
 on:
+  # Manually triggered workflow using the "Run workflow" button
+  workflow_dispatch:
   push:
-    branches: ['main']
-
-  repository_dispatch:
-    types: ['deploy-snapshots']
+    branches: [stock-v2]
+  pull_request:
+    branches: [stock-v2]
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-      # Check out the code
-      - uses: actions/checkout@v2
-
-        # Enable caching of Maven dependencies to speed up job execution.  See https://github.com/actions/cache
-      - uses: actions/cache@v1
+      - name: Set up JDK 8
+        uses: actions/setup-java@v4
         with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-        # Set up Java 1.8 with Maven including a .m2/settings.xml file.  See https://github.com/actions/setup-java
-      - name: Set up JDK 1.8 and Maven settings file
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-          server-id: openmrs-repo-snapshots
-          server-username: secret_BINTRAY_USERNAME
-          server-password: secret_BINTRAY_PASSWORD
+          distribution: "temurin"
+          java-version: "8"
 
-      - name: Maven Deploy
-        run: mvn -X -B deploy --file pom.xml
-        env:
-          secret_BINTRAY_USERNAME: ${{ secrets.BINTRAY_USERNAME }}
-          secret_BINTRAY_PASSWORD: ${{ secrets.BINTRAY_PASSWORD }}
+      - name: Build with Maven
+        run: mvn -B package -DskipTests
+
+  publish:
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/stock-v2' }}
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 8
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "8"
+
+      - name: Set settings.xml
+        uses: s4u/maven-settings-action@v3.0.0
+        with:
+          servers: |
+            [{
+              "id": "mks-repo",
+              "username": "${{ secrets.MAVEN_USERNAME }}",
+              "password": "${{ secrets.MAVEN_TOKEN }}"
+            },
+            {
+              "id": "mks-repo-snapshots",
+              "username": "${{ secrets.MAVEN_USERNAME }}",
+              "password": "${{ secrets.MAVEN_TOKEN }}"
+            }]
+
+      - name: Publish
+        run: mvn --batch-mode clean deploy -DskipTests

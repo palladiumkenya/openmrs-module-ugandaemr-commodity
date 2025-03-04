@@ -1,5 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.openmrs.module</groupId>
@@ -25,7 +26,8 @@
 
     <properties>
         <!--
-        changed this from 1.12.0 to 2.0.0 to support unit tests failing with error ASM ClassReader failed to parse class file
+        changed this from 1.12.0 to 2.0.0 to support unit tests failing with error ASM ClassReader failed
+        to parse class file
         https://talk.openmrs.org/t/how-can-i-fix-this-issue-failed-to-load-applicationcontext/33980/10
         -->
         <openmrsPlatformVersion>2.4.3</openmrsPlatformVersion>
@@ -160,14 +162,14 @@
     </build>
     <distributionManagement>
         <repository>
-            <id>openmrs-repo-modules</id>
-            <name>OpenMRS Modules</name>
-            <url>https://openmrs.jfrog.io/artifactory/modules/</url>
+            <id>mks-repo</id>
+            <name>Mekom Solutions Nexus Releases</name>
+            <url>https://nexus.mekomsolutions.net/repository/maven-releases</url>
         </repository>
         <snapshotRepository>
-            <id>openmrs-repo-snapshots</id>
-            <name>OpenMRS Snapshots</name>
-            <url>https://openmrs.jfrog.io/openmrs/snapshots</url>
+            <id>mks-repo-snapshots</id>
+            <name>Mekom Solutions Nexus Snapshots</name>
+            <url>https://nexus.mekomsolutions.net/repository/maven-snapshots</url>
         </snapshotRepository>
     </distributionManagement>
 
